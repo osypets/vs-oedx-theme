@@ -1,38 +1,47 @@
 ## mako
-<%!
-  from django.core.urlresolvers import reverse
-  from django.utils.translation import ugettext as _
-%>
-<%namespace name='static' file='/static_content.html'/>
-<%!
-  from datetime import date
-%>
+<%! from django.utils.translation import ugettext as _ %>
+<%! from microsite_configuration.templatetags.microsite import platform_name %>
+<%namespace name='static' file='static_content.html'/>
 
-<div class="wrapper-footer">
-  <footer>
-    <div class="colophon">
-      <nav class="nav-colophon">
-        <ol>
-          <li><a href="${reverse('about')}">About</a></li>
-          <li><a href="${reverse('about')}#careers">Careers</a></li>
-          <li><a href="${reverse('about')}#contact">Contact</a></li>
-          <li><a href="${reverse('tos')}">Terms of Service</a></li>
-          <li><a href="${reverse('tos')}#privacy">Privacy Policy</a></li>
-          <li><a href="${reverse('tos')}#honor">Honor Code</a></li>
-          <li><a href="${reverse('tos')}#copyright">Copyright</a></li>
-        </ol>
-      </nav>
+<footer class="global">
+  <div class="footer-container">
+    <ul class="links">
+      %if settings.MKTG_URL_LINK_MAP.get('ABOUT'):
+      <li>
+        <a id="about" href="${marketing_link('ABOUT')}">${_("About")}</a>
+      </li>
+      %endif
+      %if settings.MKTG_URL_LINK_MAP.get('FAQ'):
+      <li>
+        <a id="faq" href="${marketing_link('FAQ')}">${_("FAQ")}</a>
+      </li>
+      %endif
+      %if settings.MKTG_URL_LINK_MAP.get('CONTACT'):
+      <li>
+        <a id="contact" href="${marketing_link('CONTACT')}">${_("Contact")}</a>
+      </li>
+      %endif
+      %if settings.MKTG_URL_LINK_MAP.get('TOS'):
+      <li>
+        <a href="${marketing_link('TOS')}">${_("Terms of Service")}</a>
+      </li>
+      %endif
+      %if settings.MKTG_URL_LINK_MAP.get('HONOR'):
+      <li>
+        <a href="${marketing_link('HONOR')}">${_("Honor Code")}</a>
+      </li>
+      %endif
+      %if settings.MKTG_URL_LINK_MAP.get('PRIVACY'):
+      <li>
+        <a href="${marketing_link('PRIVACY')}">${_("Privacy Policy")}</a>
+      </li>
+      %endif
+    </ul>
+    <p class="copyright">${_(u"© 2015 {platform_name}, some rights reserved.").format(platform_name=platform_name())}</p>
+    <div class="by-ionisx">
+      <a href="https://ionisx.com">
+        <img src="${static.url('themes/{theme_name}/images/logo-x-white.png'.format(theme_name=settings.THEME_NAME))}" alt="Theme by IONISx">
+      </a>
     </div>
-    <div class="references">
-      <span>Built on <a href="http://code.edx.org">OpenEdX</a>.</span>
-    </div>
-
-    <div class="copyright">
-        <p><span>
-            ${_('Copyright {year}. All rights reserved.').format(
-                year=date.today().year
-            )}
-        </span></p>
-    </div>
-  </footer>
-</div>
+  </div>
+</footer>
